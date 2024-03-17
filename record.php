@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Health Information Form with Voice Message</title>
+<style>
+body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+    }
+
+    h2 {
+        text-align: center;
+        color: #333;
+        font-weight: bold;
+    }
+
+    form {
+        max-width: 600px;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 5px;
+        color: #333;
+    }
+
+    input[type="email"],
+    select,
+    textarea {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+        font-size: 16px;
+    }
+
+    input[type="file"] {
+        margin-top: 5px;
+    }
+
+    input[type="submit"] {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+        border-radius: 5px;
+        font-size: 16px;
+    }
+
+    input[type="submit"]:hover {
+        background-color: #0056b3;
+    }
+
+    #btn1
+    {
+        background-color:#0a7af4;; /* Green */
+  border:none;
+  color: white;
+  padding: 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  margin: 4px 2px;
+   width: 100px;
+   height:40px;
+   font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+        
+    }
+
+
+    #doctorGroup {
+        display: none;
+    }
+
+    #recordedAudio {
+        display: none;
+    }
+
+    #error-message {
+        color: red;
+        margin-top: 5px;
+    }
+
+</style>
+</head>
+<body>
+<h2 id="i1">Patient Record</h2>
+<form method="post" enctype="multipart/form-data" id="healthForm" action="first.html">
+    <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+    </div>
+    <div class="form-group">
+        <label for="disease">Select Disease:</label>
+        <select id="disease" name="disease" required>
+            <option value="">Select Disease</option>
+            <option value="External Disease">External Disease</option>
+            <option value="Heart Disease">Heart Disease</option>
+            <option value="Diabetes">Diabetes</option>
+            <option value="Mental Health issues">Mental health issues</option>
+            <option value="viral infection">Viral infection</option>
+            <option value="Asthma">Asthma</option>
+        </select>
+    </div>
+    <div class="form-group" id="doctorGroup">
+        <label for="doctor">Select Doctor:</label>
+        <select id="doctor" name="doctor" required></select>
+    </div>
+    <div class="form-group">
+        <label for="medicalReports">Medical Reports:</label>
+        <input type="file" id="medicalReports" name="medical report" multiple accept=".pdf,.doc,.docx">
+    </div>
+    <div class="form-group">
+        <label for="medicalImages">Medical Images:</label>
+        <input type="file" id="medicalImages" name="medicalReports" multiple accept="image/*">
+    </div>
+    <div class="form-group">
+        <label for="additionalInfo">Additional Information:</label>
+        <textarea id="additionalInfo" name="additionalInfo" rows="4"></textarea>
+    </div>
+    
+   <center><input type="submit" value="Submit" style="border-radius: 5px;">
+    <input type="button" id="btn1" value="Share" class="btn" onclick="myfun()" /></td></center>
+</form>
+
+
+<script>
+    function myfun()
+            {
+               var b= confirm("want to share a mail");
+               if(b)
+               {
+                window.location="first.html";
+               }
+            }
+const doctorsByDisease = {
+    "External Disease": ["Dr N.D.Gupta" , "Dr. S.M.Pradhan"],
+    "Heart Disease": ["Dr A.R.Nene", "Dr. S.M.Chavan"],
+    "Diabetes": ["Dr T.C.Jadhav", "Dr.C.R.Patil"],
+    "Mental Health issues": ["Dr D.B.Shinde", "Dr. L.K.Suryawanshi"],
+    "viral infection": ["Dr D.R.Walwekar", "Dr.P.D.Mahajan","Dr A.P.Chivate"],
+    "Asthma": ["Dr P.S.Mishra", "Dr.R.T.Walwekar"]
+};
+
+const diseaseSelect = document.getElementById('disease');
+const doctorGroup = document.getElementById('doctorGroup');
+const doctorSelect = document.getElementById('doctor');
+
+diseaseSelect.addEventListener('change', function() {
+    const selectedDisease = diseaseSelect.value;
+    if (selectedDisease !== '') {
+        const doctors = doctorsByDisease[selectedDisease];
+        doctorSelect.innerHTML = '';
+        doctors.forEach(function(doctor) {
+            const option = document.createElement('option');
+            option.text = doctor;
+            option.value = doctor;
+            doctorSelect.appendChild(option);
+        });
+        doctorGroup.style.display = 'block';
+    } else {
+        doctorGroup.style.display = 'none';
+    }
+});
+
+document.getElementById('healthForm').addEventListener('submit', function(event) {
+    var email = document.getElementById('email').value.trim();
+    var disease = document.getElementById('disease').value;
+    var medicalReports = document.getElementById('medicalReports').files;
+    var medicalImages = document.getElementById('medicalImages').files;
+    var additionalInfo = document.getElementById('additionalInfo').value.trim();
+
+    /*if (name === '' || email === '' || disease === '' || (medicalReports.length === 0 && medicalImages.length === 0)) {
+        alert('Please fill in all required fields.');
+        event.preventDefault();
+    } else if (!isValidEmail(email)) {
+        alert('Please enter a valid email address.');
+        event.preventDefault();
+    }*/
+});
+
+function isValidEmail(email) {
+    var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+}
+
+</script>
+
+<?php
+// Database connection details
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "patiet_details"; // Corrected table name
+
+// Create connection
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+// Check if the form is submitted
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Retrieve and sanitize email input
+    $email = isset($_POST['email']) ? filter_var($_POST['email'], FILTER_SANITIZE_EMAIL) : '';
+
+    // Validate the email format
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        // Email is not valid
+        echo "Invalid email address";
+        exit; // Stop further execution
+    }
+
+    // Retrieve other form data
+    $disease = isset($_POST['disease']) ? $_POST['disease'] : '';
+    $doctor = isset($_POST['doctor']) ? $_POST['doctor'] : ''; // Ensure this field is properly populated in the form
+    $additionalInfo = isset($_POST['additionalInfo']) ? $_POST['additionalInfo'] : '';
+    $voiceMessage = isset($_POST['voiceMessage']) ? $_POST['voiceMessage'] : '';
+     
+
+    // Handle file uploads (medical reports, medical images)
+    // Medical Reports
+    $medicalReportsPaths = [];
+    if (!empty($_FILES['medical report']['name'][0])) 
+    {
+        foreach ($_FILES['medical report']['tmp_name'] as $key => $tmpName)
+         {
+            $fileName = basename($_FILES['medicalReports']['name'][$key]);
+            $targetFilePath = "uploads/" . $fileName;
+            if (move_uploaded_file($tmpName, $targetFilePath)) {
+                $medicalReportsPaths[] = $targetFilePath;
+            }
+        }
+    }
+
+    // Medical Images
+    $medicalImagesPaths = [];
+    if (!empty($_FILES['medicalImages']['name'][0])) {
+        foreach ($_FILES['medicalImages']['tmp_name'] as $key => $tmpName) {
+            $fileName = basename($_FILES['medicalImages']['name'][$key]);
+            $targetFilePath = "uploads/" . $fileName;
+            if (move_uploaded_file($tmpName, $targetFilePath)) {
+                $medicalImagesPaths[] = $targetFilePath;
+            }
+        }
+    }
+
+    // Insert data into the database
+    $sql = "INSERT INTO patient_records (email, disease,medical_report, medical_img,addinfo,voicemsg)  VALUES ('$email', '$disease','$additionalInfo', '$voiceMessage', '" . implode(",", $medicalReportsPaths) . "', '" . implode(",", $medicalImagesPaths) . "')";
+
+    if ($conn->query($sql) === TRUE) {
+        echo"<script>alert('Records added successfully');</script>";
+    } else {
+        echo "Error: " . $sql . "<br>" . $conn->error;
+    }
+}
+
+// Close connection
+$conn->close();
+?>
+
+</body>
+</html>

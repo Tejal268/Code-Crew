@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Doctor-Patient Chat</title>
+<style>
+   body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.chat-container {
+    width: 300px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.chat-messages {
+    height: 300px;
+    overflow-y: scroll;
+    padding: 10px;
+}
+
+.message {
+    margin-bottom: 10px;
+}
+
+.doctor {
+    background-color: #e5e5ff;
+    text-align: left;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.patient {
+    background-color: #ccffcc;
+    text-align: right;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.chat-input {
+    width: calc(100% - 20px);
+    padding: 5px 10px;
+    border: none;
+    border-top: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+.btn {
+    display: block;
+    margin: 20px auto;
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    
+}
+
+h2{
+    text-align: center;
+}
+
+</style>
+</head>
+<body>
+<div id="chat">
+    <h2>Lets chat with doctor</h2>
+<div class="chat-container">
+   
+    <div class="chat-messages" id="chat-messages">
+        <div class="message doctor">Hello! How can I help you today?</div>
+    </div>
+    <input type="text" class="chat-input" id="user-input" placeholder="Type your message...">
+</div>
+
+<button class="btn" id="end-chat">End Chat</button>
+</div>
+<script>
+    var doctorResponses = [
+        "I'll get back to you shortly.",
+        "Please describe your symptoms in detail.",
+        "Have you experienced this issue before?",
+        "It sounds like you might need further examination.",
+        "Let me check your medical records.",
+        "I recommend you to see a specialist.",
+        "Can you provide more information about your medical history?",
+        "Have you tried any treatments before?",
+        "Let me look into this for you.",
+        "I suggest you to get some rest and monitor your condition.",
+        "We may need to schedule a follow-up appointment."
+    ];
+
+    document.getElementById('user-input').addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') {
+            sendMessage();
+        }
+    });
+
+    function sendMessage() {
+        var userInput = document.getElementById('user-input').value;
+        if (userInput.trim() === '') return;
+
+        var chatMessages = document.getElementById('chat-messages');
+        var messageNode = document.createElement('div');
+        messageNode.textContent = userInput;
+        messageNode.classList.add('message', 'patient');
+        chatMessages.appendChild(messageNode);
+
+        document.getElementById('user-input').value = '';
+
+        // Simulate doctor's response after a short delay
+        setTimeout(function () {
+            var randomIndex = Math.floor(Math.random() * doctorResponses.length);
+            var doctorResponse = document.createElement('div');
+            doctorResponse.textContent = doctorResponses[randomIndex];
+            doctorResponse.classList.add('message', 'doctor');
+            chatMessages.appendChild(doctorResponse);
+
+            // Scroll to bottom
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }, 500);
+    }
+
+    // Button click event to end chat and redirect
+    document.getElementById('end-chat').addEventListener('click', function() {
+        window.location.href = "./Homepage.php";
+    });
+</script>
+
+</body>
+</html>

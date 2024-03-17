@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PD Registration</title>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+
+        .button-box {
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 400px;
+            width: 100%;
+            box-sizing: border-box;
+            background-color: #ffffff;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        button {
+            padding: 15px 40px;
+            font-size: 18px;
+            border: 2px solid black; 
+            border-radius: 10px;
+            background-color: #4CAF50;
+            color: #ffffff;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+
+</head>
+<body>
+    <div class="button-box">
+        <div class="button-container">
+            <button id="patientRegistrationButton">Register as Patient</button>
+            <button id="doctorRegistrationButton">Register as Doctor</button>
+        </div>
+    </div>
+    <script>
+       
+        const patientButton = document.getElementById('patientRegistrationButton');
+        const doctorButton = document.getElementById('doctorRegistrationButton');
+
+        function handleButtonClick(event) {
+            if (event.target === patientButton) {
+                window.location.href = 'patient registration.php'; 
+            } else if (event.target === doctorButton) {
+                window.location.href = 'doctor registration.php'; 
+            }
+        }
+
+        
+        patientButton.addEventListener('click', handleButtonClick);
+        doctorButton.addEventListener('click', handleButtonClick);
+    </script>
+</body>
+</html>
